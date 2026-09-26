@@ -94,4 +94,39 @@ const userLogin = async (req: Request, res: Response) => {
   }
 };
 
-export { registerUser, userLogin };
+const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("jwt");
+
+    res.json({ message: "User logged out successfully" });
+  } catch (error) {
+    // console.log(error);
+
+    return res.status(500).json({
+      error: "Error logging out user.",
+    });
+  }
+};
+
+const getUserInfo = async (req: Request, res: Response) => {
+  try {
+    // console.log(req.user?._id);
+
+    const user = await User.findById(req.user?._id).select("-password -__v");
+
+    // console.log(loggedInUser);
+
+    res.json({
+      message: "Current loggedIn user",
+      user,
+    });
+  } catch (error) {
+    // console.log(error);
+
+    return res.status(500).json({
+      error: "Error fetching user info.",
+    });
+  }
+};
+
+export { registerUser, userLogin, logout, getUserInfo };
