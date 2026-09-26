@@ -1,17 +1,26 @@
 import express from "express";
 import {
-  getUserInfo,
-  logout,
-  registerUser,
-  userLogin,
-} from "../controllers/auth.controllers.ts";
+  getUserById,
+  updatePassword,
+  updateProfile,
+} from "../controllers/user.controlers.ts";
 import { checkAuth } from "../lib/checkAuth.ts";
+import upload from "../middleware/multer.middleware.ts";
 
 const router = express.Router();
 
-router.post("/register", registerUser);
-router.post("/login", userLogin);
-router.post("/logout", logout);
-router.get("/user-info", checkAuth, getUserInfo);
+router.post("/:userId", checkAuth, getUserById);
+
+router.patch(
+  "/profile",
+  checkAuth,
+  upload.fields([
+    { name: "profileImage", maxCount: 1 },
+    { name: "resume", maxCount: 1 },
+  ]),
+  updateProfile,
+);
+
+router.patch("/update-password", checkAuth, updatePassword);
 
 export default router;

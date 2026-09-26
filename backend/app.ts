@@ -3,14 +3,16 @@ import express from "express";
 import "dotenv/config";
 import { connectDB } from "./db/dbConnect.ts";
 
-import userRouter from "../backend/routes/user.routes.ts";
+import authRouter from "./routes/auth.routes.ts";
+import userRouter from "./routes/user.routes.ts";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/auth", userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 connectDB().then(() =>
   app.listen(PORT, () =>
