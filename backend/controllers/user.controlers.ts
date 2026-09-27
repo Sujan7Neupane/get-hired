@@ -61,7 +61,7 @@ const updateProfile = async (req: Request, res: Response) => {
     if (image) user.profileImage = image.secure_url;
     if (resume) user.resume = resume.secure_url;
 
-    console.log(typeof skillsArray);
+    // console.log(typeof skillsArray);
 
     await user.save();
 

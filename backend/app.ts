@@ -5,6 +5,7 @@ import { connectDB } from "./db/dbConnect.ts";
 
 import authRouter from "./routes/auth.routes.ts";
 import userRouter from "./routes/user.routes.ts";
+import companyRouter from "./routes/company.routes.ts";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,6 +14,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/company", companyRouter);
 
 connectDB().then(() =>
   app.listen(PORT, () =>

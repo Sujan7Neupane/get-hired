@@ -19,6 +19,11 @@ const checkAuth = async function (
   try {
     const { jwt: token } = req.cookies;
     // console.log(token);
+    if (!token) {
+      return res.status(401).json({
+        message: "Unauthorized! Please log in.",
+      });
+    }
 
     const { _id } = jwt.verify(token, jwt_secret) as TokenPayload;
     // console.log(_id);
@@ -43,4 +48,38 @@ const checkAuth = async function (
   }
 };
 
-export { checkAuth };
+const checkEmployer = (req: Request, res: Response, next: NextFunction) => {
+  // console.log(req.user);
+
+  if (!req.user) {
+    return res.status(401).json({
+      message: "Unauthorized!",
+    });
+  }
+
+  if (req.user.role !== "employer") {
+    return res.status(403).json({
+      message: "Only employers can access this route!",
+    });
+  }
+
+  next();
+};
+
+const checkAdmin = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: "Unauthorized!",
+    });
+  }
+
+  if (req.user.role !== "admin") {
+    return res.status(403).json({
+      message: "Only admin can access this route!",
+    });
+  }
+
+  next();
+};
+
+export { checkAuth, checkEmployer, checkAdmin };
