@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const LocationSchema = new mongoose.Schema(
+export const LocationSchema = new mongoose.Schema(
   {
     city: {
       type: String,
