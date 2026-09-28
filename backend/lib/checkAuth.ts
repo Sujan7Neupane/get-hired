@@ -82,4 +82,20 @@ const checkAdmin = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-export { checkAuth, checkEmployer, checkAdmin };
+const checkCandidate = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: "Unauthorized!",
+    });
+  }
+
+  if (req.user.role !== "candidate") {
+    return res.status(403).json({
+      message: "Only candidates can apply for jobs!",
+    });
+  }
+
+  next();
+};
+
+export { checkAuth, checkEmployer, checkAdmin, checkCandidate };
