@@ -10,6 +10,7 @@ import jobRouter from "./routes/jobs.routes.ts";
 import applicationRouter from "./routes/application.routes.ts";
 import savedJobsRouter from "./routes/saveJobs.routes.ts";
 import dashboardRouter from "./routes/dashbboard.routes.ts";
+import adminRouter from "./routes/admin.routes.ts";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +24,7 @@ app.use("/api/job", jobRouter);
 app.use("/api/application", applicationRouter);
 app.use("/api/saved-jobs", savedJobsRouter);
 app.use("/api/dashboard", dashboardRouter);
+app.use("/api/admin", adminRouter);
 
 connectDB().then(() =>
   app.listen(PORT, () =>
