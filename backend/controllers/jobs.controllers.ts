@@ -68,7 +68,7 @@ const getAllJobs = async (req: Request, res: Response) => {
       };
     }
 
-    const jobs = await Job.find(filter);
+    const jobs = await Job.find(filter).populate("company", "name logo");
     if (jobs.length === 0) {
       return res.status(404).json({
         message: "No jobs found.",
@@ -82,7 +82,7 @@ const getAllJobs = async (req: Request, res: Response) => {
   }
 };
 
-const getJob = async (req: Request, res: Response) => {
+const getJobById = async (req: Request, res: Response) => {
   try {
     const { jobId } = req.params;
     const job = await Job.findById(jobId);
@@ -95,11 +95,8 @@ const getJob = async (req: Request, res: Response) => {
   }
 };
 
-const getJobById = async (req: Request, res: Response) => {
+const getSpecificCompanyJobs = async (req: Request, res: Response) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized!" });
-    }
     const { companyId } = req.params;
     const company = await Company.findById(companyId);
     if (!company) {
@@ -214,4 +211,11 @@ const deleteJob = async function (req: Request, res: Response) {
   }
 };
 
-export { createJob, getAllJobs, getJob, getJobById, updateJob, deleteJob };
+export {
+  createJob,
+  getAllJobs,
+  getJobById,
+  getSpecificCompanyJobs,
+  updateJob,
+  deleteJob,
+};

@@ -19,8 +19,8 @@ router.post(
   createCompany,
 );
 
-router.get("/", checkAuth, getCompanies);
-router.get("/:companyId", checkAuth, getCompanyById);
+router.get("/", getCompanies);
+router.get("/:companyId", getCompanyById);
 
 router.patch(
   "/:companyId/update",

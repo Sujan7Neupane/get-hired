@@ -3,8 +3,8 @@ import {
   createJob,
   deleteJob,
   getAllJobs,
-  getJob,
   getJobById,
+  getSpecificCompanyJobs,
   updateJob,
 } from "../controllers/jobs.controllers.ts";
 import { checkAuth, checkEmployer } from "../lib/checkAuth.ts";
@@ -12,9 +12,9 @@ import { checkAuth, checkEmployer } from "../lib/checkAuth.ts";
 const router = express.Router();
 
 router.post("/:companyId", checkAuth, checkEmployer, createJob);
-router.get("/", checkAuth, getAllJobs);
-router.get("/:companyId/jobs", checkAuth, getJobById);
-router.get("/:jobId", checkAuth, getJob);
+router.get("/", getAllJobs);
+router.get("/:companyId/jobs", getSpecificCompanyJobs);
+router.get("/:jobId", getJobById);
 router.patch("/:jobId", checkAuth, checkEmployer, updateJob);
 router.delete("/:jobId", checkAuth, checkEmployer, deleteJob);
 
