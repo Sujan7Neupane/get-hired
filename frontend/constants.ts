@@ -1,0 +1,9 @@
+export const BASE_URL = "";
+export const JOB_URL = "/api/job";
+export const AUTH_URL = "/api/auth";
+export const USER_URL = "/api/user";
+export const COMPANY_URL = "/api/company";
+export const APPLICATION_URL = "/api/application";
+export const SAVED_JOBS_URL = "/api/saved-jobs";
+export const DASHBOARD_URL = "/api/dashboard";
+export const ADMIN_URL = "/api/admin";

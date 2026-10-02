@@ -108,7 +108,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-10 border-t border-base-300 pt-6 text-center text-sm text-base-content/50">
-          &;copy {new Date().getFullYear()} getHired. All rights reserved.
+          &copy; {new Date().getFullYear()} getHired. All rights reserved.
         </div>
       </div>
     </footer>
