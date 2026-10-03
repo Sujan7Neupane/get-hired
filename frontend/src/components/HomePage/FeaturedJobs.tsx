@@ -4,7 +4,7 @@ import Loading from "../ui/Loading";
 import Error from "../ui/Error";
 
 const FeaturedJobs = () => {
-  const { data, isLoading, error } = useGetJobsQuery();
+  const { data, isLoading, error } = useGetJobsQuery({});
   const jobs = data?.jobs ?? [];
 
   console.log(jobs);

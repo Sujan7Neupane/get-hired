@@ -51,7 +51,7 @@ const createJob = async (req: Request, res: Response) => {
 
 const getAllJobs = async (req: Request, res: Response) => {
   try {
-    const { status, skills, employmentType } = req.query;
+    const { status, skills, employmentType, keyword, location } = req.query;
 
     const filter: any = {};
     if (status) {
@@ -65,6 +65,21 @@ const getAllJobs = async (req: Request, res: Response) => {
     if (typeof skills === "string") {
       filter.skills = {
         $all: skills.split(","),
+      };
+    }
+
+    if (typeof keyword === "string" && keyword.trim()) {
+      filter.$or = [
+        { title: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+        { skills: { $regex: keyword, $options: "i" } },
+      ];
+    }
+
+    if (typeof location === "string" && location.trim()) {
+      filter["location.city"] = {
+        $regex: location,
+        $options: "i",
       };
     }
 

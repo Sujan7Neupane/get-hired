@@ -4,11 +4,14 @@ import apiSlice from "../apiSlice";
 
 const jobApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getJobs: builder.query<GetJobsResponse, void>({
-      query: () => ({
+    getJobs: builder.query<
+      GetJobsResponse,
+      { keyword?: string; location?: string }
+    >({
+      query: (params) => ({
         url: JOB_URL,
+        params,
       }),
-      keepUnusedDataFor: 5,
     }),
     getJobById: builder.query<GetJobByIdResponse, string>({
       query: (id) => ({

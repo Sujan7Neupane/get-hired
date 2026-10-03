@@ -1,12 +1,20 @@
 import { FaBriefcase, FaLocationArrow } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 
 import { useGetJobsQuery } from "../redux/slices/jobApiSlice";
 import Loading from "../components/ui/Loading";
 import Error from "../components/ui/Error";
 
 const JobsPage = () => {
-  const { data, isLoading, error } = useGetJobsQuery();
+  const [searchParams] = useSearchParams();
+
+  const keyword = searchParams.get("keyword") || "";
+  const location = searchParams.get("location") || "";
+
+  const { data, isLoading, error } = useGetJobsQuery({
+    keyword,
+    location,
+  });
 
   const jobs = data?.jobs ?? [];
 
