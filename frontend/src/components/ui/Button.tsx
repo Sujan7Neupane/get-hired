@@ -3,6 +3,7 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset";
   className?: string;
   onClick?: () => void;
+  disabled?: boolean;
   "aria-label"?: string;
 }
 
@@ -11,12 +12,14 @@ const Button = ({
   type = "button",
   className = "",
   onClick,
+  disabled = false,
   "aria-label": ariaLabel,
 }: ButtonProps) => {
   return (
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       aria-label={ariaLabel}
       className={`btn btn-neutral ${className}`}
     >

@@ -7,7 +7,7 @@ const FeaturedJobs = () => {
   const { data, isLoading, error } = useGetJobsQuery({});
   const jobs = data?.jobs ?? [];
 
-  console.log(jobs);
+  // console.log(jobs);
 
   return (
     <>

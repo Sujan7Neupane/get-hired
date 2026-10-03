@@ -9,6 +9,8 @@ import JobDetailsPage from "./pages/JobDetailsPage.tsx";
 import CompanyDetailsPage from "./pages/CompanyDetailsPage.tsx";
 import JobsPage from "./pages/JobPage.tsx";
 import CompaniesPage from "./pages/CompanyPage.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
+import RegisterPage from "./pages/RegisterPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
@@ -20,6 +22,8 @@ createRoot(document.getElementById("root")!).render(
           <Route path="jobs/:id" element={<JobDetailsPage />} />
           <Route path="companies/" element={<CompaniesPage />} />
           <Route path="companies/:id" element={<CompanyDetailsPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

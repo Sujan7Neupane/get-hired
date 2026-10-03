@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface User {
-  _id: string;
+  id: string;
   fullName: string;
   email: string;
   role: "candidate" | "employer" | "admin";
@@ -13,7 +13,12 @@ interface AuthState {
   isAuthenticated: boolean;
 }
 
-const initialState: AuthState = { user: null, isAuthenticated: false };
+const storedUser = localStorage.getItem("user");
+
+const initialState: AuthState = {
+  user: storedUser ? JSON.parse(storedUser) : null,
+  isAuthenticated: !!storedUser,
+};
 
 const authSlice = createSlice({
   name: "auth",
@@ -22,10 +27,12 @@ const authSlice = createSlice({
     login: (state, action) => {
       state.user = action.payload;
       state.isAuthenticated = true;
+      localStorage.setItem("user", JSON.stringify(action.payload));
     },
     logout: (state) => {
       state.user = null;
       state.isAuthenticated = false;
+      localStorage.removeItem("user");
     },
   },
 });
