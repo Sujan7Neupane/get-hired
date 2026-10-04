@@ -1,4 +1,4 @@
-import { AUTH_URL } from "../../../constants";
+import { AUTH_URL, USER_URL } from "../../../constants";
 import apiSlice from "../apiSlice";
 
 interface LogoutResponse {
@@ -31,6 +31,22 @@ const authApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: `${AUTH_URL}/user-info`,
       }),
+      providesTags: ["User"],
+    }),
+
+    getUserById: builder.query({
+      query: (userId) => ({
+        url: `${USER_URL}/${userId}`,
+      }),
+    }),
+
+    updateProfile: builder.mutation({
+      query: (data) => ({
+        url: `${USER_URL}/profile`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
     }),
   }),
 });

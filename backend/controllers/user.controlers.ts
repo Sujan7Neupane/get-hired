@@ -18,6 +18,9 @@ const getUserById = async (req: Request, res: Response) => {
         email: user?.email,
         role: user?.role,
         profileImage: user?.profileImage,
+        skills: user?.skills,
+        resume: user?.resume,
+        isActive: user?.isActive,
       },
     });
   } catch (error) {
@@ -56,8 +59,14 @@ const updateProfile = async (req: Request, res: Response) => {
     const resume = await uploadOnCloudinary(files?.resume?.[0]?.path, "raw");
 
     user.fullName = fullName || user.fullName;
-    const skillsArray = skills.split(",").map((skill: String) => skill.trim()); //string array because we need to map it later
-    if (skills) user.skills = skillsArray;
+    if (skills) {
+      const skillsArray = skills
+        .split(",")
+        .map((skill: string) => skill.trim())
+        .filter(Boolean);
+
+      user.skills = skillsArray;
+    }
     if (image) user.profileImage = image.secure_url;
     if (resume) user.resume = resume.secure_url;
 
