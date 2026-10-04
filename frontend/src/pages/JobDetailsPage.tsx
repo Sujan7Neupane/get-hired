@@ -1,13 +1,49 @@
+import { useState } from "react";
 import { FaArrowLeft, FaBriefcase, FaLocationArrow } from "react-icons/fa";
 import { Link, useParams } from "react-router";
-
+import { useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useGetJobByIdQuery } from "../redux/slices/jobApiSlice";
+import {
+  useApplyJobMutation,
+  useGetMyApplicationsQuery,
+} from "../redux/slices/applicationApiSlice";
 import Loading from "../components/ui/Loading";
 import Error from "../components/ui/Error";
+import Button from "../components/ui/Button";
+import Input from "../components/ui/Input";
+
+interface ApplyFormData {
+  resume: FileList;
+  coverLetter: string;
+}
 
 const JobDetailsPage = () => {
   const { id } = useParams();
-  //   console.log(id);
+  const { user } = useSelector((state: any) => state.auth);
+
+  const [showApplyForm, setShowApplyForm] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ApplyFormData>();
+
+  const [applyJob, { isLoading: isApplying }] = useApplyJobMutation();
+
+  const { data: applicationsData } = useGetMyApplicationsQuery(undefined, {
+    skip: user?.role !== "candidate",
+  });
+  // console.log(applicationsData);
+
+  const hasAlreadyApplied =
+    applicationsData?.applications.some(
+      (application) => application.job === id,
+    ) ?? false;
+
   if (!id) {
     return <Error message="Job ID is missing." />;
   }
@@ -21,7 +57,28 @@ const JobDetailsPage = () => {
     return <Error message="Failed to load job details." />;
   }
 
-  const job = data?.job ?? [];
+  const job = data.job;
+
+  const handleApply = async (formData: ApplyFormData) => {
+    try {
+      const applicationData = new FormData();
+
+      applicationData.append("resume", formData.resume[0]);
+      applicationData.append("coverLetter", formData.coverLetter);
+
+      await applyJob({
+        jobId: id,
+        formData: applicationData,
+      }).unwrap();
+
+      toast.success("Application submitted successfully.");
+
+      setShowApplyForm(false);
+      reset();
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to submit application.");
+    }
+  };
 
   return (
     <div className="mx-auto max-w-5xl py-10">
@@ -38,7 +95,7 @@ const JobDetailsPage = () => {
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <p className="text-sm font-medium text-primary">
-                Company ID: {id}
+                {job.company.name}
               </p>
 
               <h1 className="mt-2 text-3xl font-bold sm:text-4xl">
@@ -118,6 +175,7 @@ const JobDetailsPage = () => {
 
               <div>
                 <p className="text-base-content/50">Application Deadline</p>
+
                 <p className="mt-1 font-medium">
                   {new Date(job.expiresAt).toLocaleDateString("en-GB", {
                     day: "numeric",
@@ -130,7 +188,7 @@ const JobDetailsPage = () => {
               <div>
                 <p className="text-base-content/50">Posted</p>
                 <p className="mt-1 font-medium">
-                  {new Date(job.expiresAt).toLocaleDateString("en-GB", {
+                  {new Date(job.createdAt).toLocaleDateString("en-GB", {
                     day: "numeric",
                     month: "long",
                     year: "numeric",
@@ -139,9 +197,81 @@ const JobDetailsPage = () => {
               </div>
             </div>
 
-            <button className="btn btn-neutral mt-6 w-full">
-              Apply for this job
-            </button>
+            {user?.role === "candidate" && job.status === "open" && (
+              <div className="mt-6">
+                {hasAlreadyApplied ? (
+                  <div className="rounded-lg border border-success/30 bg-success/10 p-3 text-center text-sm font-medium text-success">
+                    You have already applied for this job.
+                  </div>
+                ) : !showApplyForm ? (
+                  <Button
+                    className="w-full"
+                    onClick={() => setShowApplyForm(true)}
+                  >
+                    Apply for this job
+                  </Button>
+                ) : (
+                  <form
+                    onSubmit={handleSubmit(handleApply)}
+                    className="space-y-5"
+                  >
+                    <div>
+                      <label className="mb-2 block text-sm font-medium">
+                        Resume
+                      </label>
+
+                      <Input
+                        type="file"
+                        accept=".pdf"
+                        {...register("resume", {
+                          required: "Resume is required.",
+                        })}
+                      />
+
+                      {errors.resume && (
+                        <p className="mt-1 text-sm text-error">
+                          {errors.resume.message}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium">
+                        Cover Letter
+                      </label>
+
+                      <textarea
+                        {...register("coverLetter")}
+                        placeholder="Write a short cover letter..."
+                        className="textarea textarea-bordered w-full"
+                        rows={5}
+                      />
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Button
+                        type="submit"
+                        className="flex-1"
+                        disabled={isApplying}
+                      >
+                        {isApplying ? "Submitting..." : "Submit Application"}
+                      </Button>
+
+                      <Button
+                        type="button"
+                        className="btn-outline"
+                        onClick={() => {
+                          setShowApplyForm(false);
+                          reset();
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            )}
           </aside>
         </div>
       </div>

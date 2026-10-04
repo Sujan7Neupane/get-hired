@@ -30,16 +30,9 @@ const applyJob = async (req: Request, res: Response) => {
     const job = await Job.findById(jobId);
     if (!job) return res.status(404).json({ message: "No job found." });
 
-    const file = req.file as Express.Multer.File;
-    if (!file) {
+    if (job.status !== "open") {
       return res.status(400).json({
-        message: "Resume is required.",
-      });
-    }
-    const uploadResume = await uploadOnCloudinary(file.path, "raw");
-    if (!uploadResume) {
-      return res.status(500).json({
-        message: "Error uploading resume.",
+        message: "This job is no longer accepting applications.",
       });
     }
 
@@ -51,6 +44,20 @@ const applyJob = async (req: Request, res: Response) => {
     if (existingApplication) {
       return res.status(400).json({
         message: "You have already applied for this job.",
+      });
+    }
+
+    const file = req.file as Express.Multer.File;
+    if (!file) {
+      return res.status(400).json({
+        message: "Resume is required.",
+      });
+    }
+
+    const uploadResume = await uploadOnCloudinary(file.path, "raw");
+    if (!uploadResume) {
+      return res.status(500).json({
+        message: "Error uploading resume.",
       });
     }
 
@@ -82,12 +89,6 @@ const getMyApplication = async (req: Request, res: Response) => {
     const applications = await Application.find({
       candidate: req.user._id,
     });
-
-    if (applications.length === 0) {
-      return res.status(404).json({
-        message: "No applications found.",
-      });
-    }
 
     return res.status(200).json({
       message: "Applications fetched successfully.",
