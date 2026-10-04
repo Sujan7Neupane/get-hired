@@ -4,7 +4,13 @@ import { setToken } from "../utils/auth.ts";
 
 const registerUser = async (req: Request, res: Response) => {
   try {
-    const { fullName, email, password } = req.body;
+    const { fullName, email, password, role } = req.body;
+
+    if (role && role !== "candidate" && role !== "employer") {
+      return res.status(400).json({
+        error: "Invalid role.",
+      });
+    }
 
     if (!fullName || !email || !password)
       return res.status(400).json({
@@ -22,6 +28,7 @@ const registerUser = async (req: Request, res: Response) => {
       fullName,
       email,
       password,
+      role: role || "candidate",
     });
 
     res.json({

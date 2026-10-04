@@ -9,6 +9,7 @@ interface RegisterFormData {
   fullName: string;
   email: string;
   password: string;
+  role: "candidate" | "employer";
 }
 
 const RegisterForm = () => {
@@ -83,6 +84,42 @@ const RegisterForm = () => {
 
         {errors.email && (
           <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+        )}
+      </div>
+
+      <div>
+        <label className="mb-3 block text-sm font-medium">
+          I want to register as
+        </label>
+
+        <div className="flex gap-6">
+          <label className="flex cursor-pointer items-center gap-2">
+            <input
+              type="radio"
+              value="candidate"
+              className="radio border-2 border-gray-300"
+              {...register("role", {
+                required: "Please select a role.",
+              })}
+            />
+            <span>Candidate</span>
+          </label>
+
+          <label className="flex cursor-pointer items-center gap-2">
+            <input
+              type="radio"
+              value="employer"
+              className="radio border-2 border-gray-300"
+              {...register("role", {
+                required: "Please select a role.",
+              })}
+            />
+            <span>Employer</span>
+          </label>
+        </div>
+
+        {errors.role && (
+          <p className="mt-1 text-sm text-red-600">{errors.role.message}</p>
         )}
       </div>
 
