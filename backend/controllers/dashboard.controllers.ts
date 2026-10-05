@@ -115,7 +115,11 @@ const getEmployerDashboard = async (req: Request, res: Response) => {
       (application) => application.status === "hired",
     );
 
-    const recentApplications = await Application.find()
+    const recentApplications = await Application.find({
+      job: { $in: jobs.map((job) => job._id) },
+    })
+      .populate("candidate", "fullName")
+      .populate("job", "title")
       .sort({ createdAt: -1 })
       .limit(5);
 

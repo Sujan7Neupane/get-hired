@@ -1,23 +1,10 @@
 import { DASHBOARD_URL } from "../../../constants";
-import type { Application } from "../../types/application";
-import type { SavedJob } from "../../types/savedJobs";
+import type {
+  CandidateDashboardResponse,
+  EmployerDashboardResponse,
+} from "../../types/dashboard";
 
 import apiSlice from "../apiSlice";
-
-interface CandidateDashboard {
-  totalApplications: number;
-  pendingApplications: number;
-  shortlistedApplications: number;
-  hiredApplications: number;
-  savedJobs: number;
-  recentApplications: Application[];
-  recentSavedJobs: SavedJob[];
-}
-
-interface CandidateDashboardResponse {
-  message: string;
-  dashboard: CandidateDashboard;
-}
 
 const dashboardApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -26,7 +13,11 @@ const dashboardApiSlice = apiSlice.injectEndpoints({
         url: `${DASHBOARD_URL}/candidate`,
       }),
     }),
+    getEmployerDashboard: builder.query<EmployerDashboardResponse, void>({
+      query: () => `${DASHBOARD_URL}/employer`,
+    }),
   }),
 });
 
-export const { useGetCandidateDashboardQuery } = dashboardApiSlice;
+export const { useGetCandidateDashboardQuery, useGetEmployerDashboardQuery } =
+  dashboardApiSlice;

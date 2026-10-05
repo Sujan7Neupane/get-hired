@@ -1,9 +1,13 @@
-import type { Job } from "./job";
-
 export interface Application {
   _id: string;
-  candidate: string;
-  job: Job;
+  candidate: {
+    _id: string;
+    fullName: string;
+  };
+  job: {
+    _id: string;
+    title: string;
+  };
   resume: string;
   coverLetter?: string;
   status:
