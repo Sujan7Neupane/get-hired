@@ -1,6 +1,7 @@
 import { useGetEmployerDashboardQuery } from "../redux/slices/dashboardApiSlice";
 import Loading from "../components/ui/Loading";
 import Error from "../components/ui/Error";
+import { Link } from "react-router";
 
 const EmployerDashboardPage = () => {
   const { data, isLoading, error } = useGetEmployerDashboardQuery();
@@ -74,6 +75,10 @@ const EmployerDashboardPage = () => {
               Applications submitted for your jobs.
             </p>
           </div>
+
+          <Link to="/employer/applications" className="btn btn-sm btn-ghost">
+            View All
+          </Link>
 
           <div className="mt-4 rounded-box border border-base-300">
             {dashboard.recentApplications.length === 0 ? (

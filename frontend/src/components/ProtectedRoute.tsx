@@ -14,7 +14,17 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
 
   // User is logged in but doesn't have permission
   if (!allowedRoles.includes(user.role)) {
-    return <Navigate to="/" replace />;
+    if (user.role === "candidate") {
+      return <Navigate to="/candidate/dashboard" replace />;
+    }
+
+    if (user.role === "employer") {
+      return <Navigate to="/employer/dashboard" replace />;
+    }
+
+    if (user.role === "admin") {
+      return <Navigate to="/admin/dashboard" replace />;
+    }
   }
 
   return <Outlet />;

@@ -11,7 +11,13 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      if (user.role === "candidate") {
+        navigate("/candidate/dashboard");
+      } else if (user.role === "employer") {
+        navigate("/employer/dashboard");
+      } else if (user.role === "admin") {
+        navigate("/admin/dashboard");
+      }
     }
   }, [user, navigate]);
 

@@ -36,12 +36,28 @@ const Header = () => {
 
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal gap-2 px-1">
-            <li>
-              <Link to="/jobs">Jobs</Link>
-            </li>
-            <li>
-              <Link to="/companies">Companies</Link>
-            </li>
+            {user?.role === "employer" ? (
+              <>
+                <li>
+                  <Link to="/employer/jobs">My Jobs</Link>
+                </li>
+
+                <li>
+                  <Link to="/employer/companies">My Companies</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/jobs">Jobs</Link>
+                </li>
+
+                <li>
+                  <Link to="/companies">Companies</Link>
+                </li>
+              </>
+            )}
+
             <li>
               <Link to="/about">About</Link>
             </li>
@@ -106,7 +122,7 @@ const Header = () => {
                     </li>
 
                     <li>
-                      <Link to="/employer/company">My Company</Link>
+                      <Link to="/employer/company">My Companies</Link>
                     </li>
 
                     <li>
@@ -174,12 +190,28 @@ const Header = () => {
               tabIndex={0}
               className="menu dropdown-content z-100 mt-3 w-64 rounded-box border border-base-300 bg-white! text-black! p-2 shadow-xl"
             >
-              <li>
-                <Link to="/jobs">Jobs</Link>
-              </li>
-              <li>
-                <Link to="/companies">Companies</Link>
-              </li>
+              {user?.role === "employer" ? (
+                <>
+                  <li>
+                    <Link to="/employer/jobs">My Jobs</Link>
+                  </li>
+
+                  <li>
+                    <Link to="/employer/companies">My Companies</Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link to="/jobs">Jobs</Link>
+                  </li>
+
+                  <li>
+                    <Link to="/companies">Companies</Link>
+                  </li>
+                </>
+              )}
+
               <li>
                 <Link to="/about">About</Link>
               </li>
