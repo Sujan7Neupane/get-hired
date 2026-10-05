@@ -2,12 +2,43 @@ import { Link } from "react-router";
 import { useGetJobsQuery } from "../../redux/slices/jobApiSlice";
 import Loading from "../ui/Loading";
 import Error from "../ui/Error";
+import { useSelector } from "react-redux";
+import {
+  useDeleteSavedJobMutation,
+  useGetSavedJobsQuery,
+  useSaveJobMutation,
+} from "../../redux/slices/savedJobApiSlice";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 
 const FeaturedJobs = () => {
   const { data, isLoading, error } = useGetJobsQuery({});
   const jobs = data?.jobs ?? [];
 
   // console.log(jobs);
+
+  const { user } = useSelector((state: any) => state.auth);
+
+  const { data: savedJobsData } = useGetSavedJobsQuery(undefined, {
+    skip: user?.role !== "candidate",
+  });
+
+  const [saveJob] = useSaveJobMutation();
+  const [deleteSavedJob] = useDeleteSavedJobMutation();
+
+  const isJobSaved = (jobId: string) => {
+    return (
+      savedJobsData?.savedJobs.some((savedJob) => savedJob.job._id === jobId) ??
+      false
+    );
+  };
+
+  const handleSaveJob = async (jobId: string) => {
+    if (isJobSaved(jobId)) {
+      await deleteSavedJob(jobId).unwrap();
+    } else {
+      await saveJob(jobId).unwrap();
+    }
+  };
 
   return (
     <>
@@ -46,8 +77,10 @@ const FeaturedJobs = () => {
                       </p>
                     </div>
 
-                    <div className="badge badge-outline whitespace-nowrap">
-                      {job.employmentType}
+                    <div className="flex items-center gap-2">
+                      <div className="badge badge-outline whitespace-nowrap">
+                        {job.employmentType}
+                      </div>
                     </div>
                   </div>
 
@@ -72,7 +105,25 @@ const FeaturedJobs = () => {
                     ))}
                   </div>
 
-                  <div className="card-actions mt-5 justify-end">
+                  <div className="card-actions mt-5 justify-between">
+                    {user?.role === "candidate" && (
+                      <button
+                        type="button"
+                        onClick={() => handleSaveJob(job._id)}
+                        className="btn btn-sm btn-ghost gap-2"
+                        aria-label={
+                          isJobSaved(job._id) ? "Remove saved job" : "Save job"
+                        }
+                      >
+                        {isJobSaved(job._id) ? (
+                          <FaBookmark />
+                        ) : (
+                          <FaRegBookmark />
+                        )}
+                        {isJobSaved(job._id) ? "Saved" : "Save"}
+                      </button>
+                    )}
+
                     <Link
                       to={`/jobs/${job._id}`}
                       className="btn btn-sm btn-ghost"

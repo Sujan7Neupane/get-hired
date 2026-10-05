@@ -56,13 +56,13 @@ const getAllSavedJobs = async (req: Request, res: Response) => {
 
     const savedJobs = await SavedJob.find({
       candidate: req.user._id,
-    }).populate("job");
-
-    if (savedJobs.length === 0) {
-      return res.status(404).json({
-        message: "You don't have any saved jobs.",
-      });
-    }
+    }).populate({
+      path: "job",
+      populate: {
+        path: "company",
+        select: "name logo",
+      },
+    });
 
     return res.status(200).json({
       message: "Saved jobs fetched successfully.",

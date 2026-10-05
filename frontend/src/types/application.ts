@@ -1,25 +1,9 @@
-interface ApplicationCompany {
-  _id: string;
-  name: string;
-  logo?: string;
-}
+import type { Job } from "./job";
 
-interface ApplicationJob {
-  _id: string;
-  title: string;
-  company: ApplicationCompany;
-  location: {
-    city: string;
-    province?: string;
-    country: string;
-  };
-  employmentType: "full-time" | "part-time" | "contract" | "internship";
-}
-
-interface Application {
+export interface Application {
   _id: string;
   candidate: string;
-  job: ApplicationJob;
+  job: Job;
   resume: string;
   coverLetter?: string;
   status:

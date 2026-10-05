@@ -1,7 +1,19 @@
-import { FaBriefcase, FaLocationArrow } from "react-icons/fa";
+import {
+  FaBookmark,
+  FaBriefcase,
+  FaLocationArrow,
+  FaRegBookmark,
+} from "react-icons/fa";
 import { Link, useSearchParams } from "react-router";
+import { useSelector } from "react-redux";
 
 import { useGetJobsQuery } from "../redux/slices/jobApiSlice";
+import {
+  useDeleteSavedJobMutation,
+  useGetSavedJobsQuery,
+  useSaveJobMutation,
+} from "../redux/slices/savedJobApiSlice";
+
 import Loading from "../components/ui/Loading";
 import Error from "../components/ui/Error";
 
@@ -16,7 +28,31 @@ const JobsPage = () => {
     location,
   });
 
+  const { user } = useSelector((state: any) => state.auth);
+
+  const { data: savedJobsData } = useGetSavedJobsQuery(undefined, {
+    skip: user?.role !== "candidate",
+  });
+
+  const [saveJob] = useSaveJobMutation();
+  const [deleteSavedJob] = useDeleteSavedJobMutation();
+
   const jobs = data?.jobs ?? [];
+
+  const isJobSaved = (jobId: string) => {
+    return (
+      savedJobsData?.savedJobs.some((savedJob) => savedJob.job._id === jobId) ??
+      false
+    );
+  };
+
+  const handleSaveJob = async (jobId: string) => {
+    if (isJobSaved(jobId)) {
+      await deleteSavedJob(jobId).unwrap();
+    } else {
+      await saveJob(jobId).unwrap();
+    }
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -46,66 +82,81 @@ const JobsPage = () => {
         </div>
       ) : (
         <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {jobs.map((job) => (
-            <div
-              key={job._id}
-              className="card border border-base-300 bg-base-100 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-            >
-              <div className="card-body">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h2 className="card-title">{job.title}</h2>
+          {jobs.map((job) => {
+            const saved = isJobSaved(job._id);
 
-                    <p className="mt-1 text-sm text-base-content/60">
-                      Company ID: {job.company._id}
+            return (
+              <div
+                key={job._id}
+                className="card border border-base-300 bg-base-100 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              >
+                <div className="card-body">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h2 className="card-title">{job.title}</h2>
+
+                      <p className="mt-1 text-sm text-base-content/60">
+                        Company ID: {job.company._id}
+                      </p>
+                    </div>
+
+                    <span className="badge badge-outline whitespace-nowrap">
+                      {job.employmentType}
+                    </span>
+                  </div>
+
+                  <div className="mt-4 space-y-2 text-sm text-base-content/60">
+                    <p className="flex items-center gap-2">
+                      <FaLocationArrow />
+                      {job.location.city}, {job.location.country}
+                    </p>
+
+                    <p className="flex items-center gap-2">
+                      <FaBriefcase />
+                      {job.experienceLevel}
                     </p>
                   </div>
 
-                  <span className="badge badge-outline whitespace-nowrap">
-                    {job.employmentType}
-                  </span>
-                </div>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {job.skills.slice(0, 4).map((skill) => (
+                      <span key={skill} className="badge badge-ghost">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
 
-                <div className="mt-4 space-y-2 text-sm text-base-content/60">
-                  <p className="flex items-center gap-2">
-                    <FaLocationArrow />
-                    {job.location.city}, {job.location.country}
-                  </p>
+                  <div className="mt-4 text-sm">
+                    <span className="text-base-content/50">Salary</span>
 
-                  <p className="flex items-center gap-2">
-                    <FaBriefcase />
-                    {job.experienceLevel}
-                  </p>
-                </div>
+                    <p className="mt-1 font-medium">
+                      {job.salary?.min?.toLocaleString()} -{" "}
+                      {job.salary?.max?.toLocaleString()} {job.salary?.currency}
+                    </p>
+                  </div>
 
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {job.skills.slice(0, 4).map((skill) => (
-                    <span key={skill} className="badge badge-ghost">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
+                  <div className="card-actions mt-5 justify-between">
+                    {user?.role === "candidate" && (
+                      <button
+                        type="button"
+                        onClick={() => handleSaveJob(job._id)}
+                        className="btn btn-sm btn-ghost gap-2"
+                      >
+                        {saved ? <FaBookmark /> : <FaRegBookmark />}
+                        {saved ? "Saved" : "Save"}
+                      </button>
+                    )}
 
-                <div className="mt-4 text-sm">
-                  <span className="text-base-content/50">Salary</span>
-
-                  <p className="mt-1 font-medium">
-                    {job.salary?.min?.toLocaleString()} -{" "}
-                    {job.salary?.max?.toLocaleString()} {job.salary?.currency}
-                  </p>
-                </div>
-
-                <div className="card-actions mt-5 justify-end">
-                  <Link
-                    to={`/jobs/${job._id}`}
-                    className="btn btn-sm btn-neutral"
-                  >
-                    View Job
-                  </Link>
+                    <Link
+                      to={`/jobs/${job._id}`}
+                      className="btn btn-sm btn-neutral"
+                    >
+                      View Job
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
