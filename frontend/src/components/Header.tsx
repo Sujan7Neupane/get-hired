@@ -83,6 +83,9 @@ const Header = () => {
                 {user.role === "candidate" && (
                   <>
                     <li>
+                      <Link to="/candidate/dashboard">Dashboard</Link>
+                    </li>
+                    <li>
                       <Link to="/profile">Profile</Link>
                     </li>
 
@@ -197,6 +200,9 @@ const Header = () => {
 
                   {user.role === "candidate" && (
                     <>
+                      <li>
+                        <Link to="/candidate/dashboard">Dashboard</Link>
+                      </li>
                       <li>
                         <Link to="/profile">Profile</Link>
                       </li>

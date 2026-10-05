@@ -37,14 +37,29 @@ const getCandidateDashboard = async (req: Request, res: Response) => {
       candidate: req.user._id,
     })
       .sort({ createdAt: -1 })
-      .limit(5);
+      .limit(5)
+      .populate({
+        path: "job",
+        populate: {
+          path: "company",
+          select: "name logo",
+        },
+      });
 
     const recentSavedJobs = await SavedJob.find({
       candidate: req.user._id,
     })
       .sort({ createdAt: -1 })
       .limit(5)
-      .populate("job");
+      .populate({
+        path: "job",
+        populate: {
+          path: "company",
+          select: "name logo",
+        },
+      });
+
+    // console.log(recentSavedJobs);
 
     res.json({
       message: "Candidate dashboard fetched successfully.",
