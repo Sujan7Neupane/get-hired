@@ -197,79 +197,85 @@ const JobDetailsPage = () => {
               </div>
             </div>
 
-            {user?.role === "candidate" && job.status === "open" && (
+            {job.status === "open" && (
               <div className="mt-6">
-                {hasAlreadyApplied ? (
-                  <div className="rounded-lg border border-success/30 bg-success/10 p-3 text-center text-sm font-medium text-success">
-                    You have already applied for this job.
-                  </div>
-                ) : !showApplyForm ? (
-                  <Button
-                    className="w-full"
-                    onClick={() => setShowApplyForm(true)}
-                  >
-                    Apply for this job
-                  </Button>
-                ) : (
-                  <form
-                    onSubmit={handleSubmit(handleApply)}
-                    className="space-y-5"
-                  >
-                    <div>
-                      <label className="mb-2 block text-sm font-medium">
-                        Resume
-                      </label>
-
-                      <Input
-                        type="file"
-                        accept=".pdf"
-                        {...register("resume", {
-                          required: "Resume is required.",
-                        })}
-                      />
-
-                      {errors.resume && (
-                        <p className="mt-1 text-sm text-error">
-                          {errors.resume.message}
-                        </p>
-                      )}
+                {!user ? (
+                  <Link to="/login" className="btn btn-neutral w-full">
+                    Login to apply for this job
+                  </Link>
+                ) : user.role === "candidate" ? (
+                  hasAlreadyApplied ? (
+                    <div className="rounded-lg border border-success/30 bg-success/10 p-3 text-center text-sm font-medium text-success">
+                      You have already applied for this job.
                     </div>
+                  ) : !showApplyForm ? (
+                    <Button
+                      className="w-full"
+                      onClick={() => setShowApplyForm(true)}
+                    >
+                      Apply for this job
+                    </Button>
+                  ) : (
+                    <form
+                      onSubmit={handleSubmit(handleApply)}
+                      className="space-y-5"
+                    >
+                      <div>
+                        <label className="mb-2 block text-sm font-medium">
+                          Resume
+                        </label>
 
-                    <div>
-                      <label className="mb-2 block text-sm font-medium">
-                        Cover Letter
-                      </label>
+                        <Input
+                          type="file"
+                          accept=".pdf"
+                          {...register("resume", {
+                            required: "Resume is required.",
+                          })}
+                        />
 
-                      <textarea
-                        {...register("coverLetter")}
-                        placeholder="Write a short cover letter..."
-                        className="textarea textarea-bordered w-full"
-                        rows={5}
-                      />
-                    </div>
+                        {errors.resume && (
+                          <p className="mt-1 text-sm text-error">
+                            {errors.resume.message}
+                          </p>
+                        )}
+                      </div>
 
-                    <div className="flex gap-2">
-                      <Button
-                        type="submit"
-                        className="flex-1"
-                        disabled={isApplying}
-                      >
-                        {isApplying ? "Submitting..." : "Submit Application"}
-                      </Button>
+                      <div>
+                        <label className="mb-2 block text-sm font-medium">
+                          Cover Letter
+                        </label>
 
-                      <Button
-                        type="button"
-                        className="btn-outline"
-                        onClick={() => {
-                          setShowApplyForm(false);
-                          reset();
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  </form>
-                )}
+                        <textarea
+                          {...register("coverLetter")}
+                          placeholder="Write a short cover letter..."
+                          className="textarea textarea-bordered w-full"
+                          rows={5}
+                        />
+                      </div>
+
+                      <div className="flex gap-2">
+                        <Button
+                          type="submit"
+                          className="flex-1"
+                          disabled={isApplying}
+                        >
+                          {isApplying ? "Submitting..." : "Submit Application"}
+                        </Button>
+
+                        <Button
+                          type="button"
+                          className="btn-outline"
+                          onClick={() => {
+                            setShowApplyForm(false);
+                            reset();
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </form>
+                  )
+                ) : null}
               </div>
             )}
           </aside>
