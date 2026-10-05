@@ -16,6 +16,7 @@ import EmployerDashboardPage from "./pages/EmployerDashboardPage.tsx";
 import AdminDashboardPage from "./pages/AdminDashboardPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
+import MyApplicationsPage from "./pages/MyApplicationPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
@@ -47,6 +48,7 @@ createRoot(document.getElementById("root")!).render(
           {/* Candidate Routes */}
           <Route element={<ProtectedRoute allowedRoles={["candidate"]} />}>
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="applications" element={<MyApplicationsPage />} />
           </Route>
         </Route>
       </Routes>

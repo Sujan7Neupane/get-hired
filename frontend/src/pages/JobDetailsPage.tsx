@@ -41,7 +41,7 @@ const JobDetailsPage = () => {
 
   const hasAlreadyApplied =
     applicationsData?.applications.some(
-      (application) => application.job === id,
+      (application) => application.job._id === id,
     ) ?? false;
 
   if (!id) {

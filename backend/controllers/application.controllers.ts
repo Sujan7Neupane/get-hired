@@ -88,6 +88,12 @@ const getMyApplication = async (req: Request, res: Response) => {
 
     const applications = await Application.find({
       candidate: req.user._id,
+    }).populate({
+      path: "job",
+      populate: {
+        path: "company",
+        select: "name logo",
+      },
     });
 
     return res.status(200).json({
