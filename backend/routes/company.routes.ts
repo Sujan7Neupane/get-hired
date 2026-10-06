@@ -5,11 +5,14 @@ import {
   deleteCompany,
   getCompanies,
   getCompanyById,
+  getEmployerCompanies,
   updateCompany,
 } from "../controllers/company.controllers.ts";
 import upload from "../middleware/multer.middleware.ts";
 
 const router = express.Router();
+
+router.get("/employer", checkAuth, checkEmployer, getEmployerCompanies);
 
 router.post(
   "/create",

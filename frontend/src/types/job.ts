@@ -36,3 +36,34 @@ export interface GetJobByIdResponse {
   message: string;
   job: Job;
 }
+
+export interface CreateJobData {
+  title: string;
+  description: string;
+
+  location: {
+    city: string;
+    province?: string;
+    country: string;
+    postalCode?: number;
+  };
+
+  employmentType: "full-time" | "part-time" | "contract" | "internship";
+
+  salary: {
+    min?: number;
+    max?: number;
+    currency: string;
+  };
+
+  skills: string[];
+
+  experienceLevel: "entry" | "junior" | "mid" | "senior";
+
+  expiresAt: string;
+}
+
+export interface CreateJobRequest {
+  companyId: string;
+  job: CreateJobData;
+}

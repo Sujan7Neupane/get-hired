@@ -156,10 +156,36 @@ const deleteCompany = async (req: Request, res: Response) => {
   }
 };
 
+const getEmployerCompanies = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Unauthorized!",
+      });
+    }
+
+    const companies = await Company.find({
+      employer: req.user._id,
+    });
+
+    res.status(200).json({
+      message: "Employer companies fetched successfully.",
+      companies,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: "Error fetching employer companies.",
+    });
+  }
+};
+
 export {
   createCompany,
   getCompanies,
   getCompanyById,
   updateCompany,
   deleteCompany,
+  getEmployerCompanies,
 };

@@ -20,6 +20,10 @@ import MyApplicationsPage from "./pages/MyApplicationPage.tsx";
 import SavedJobsPage from "./pages/SavedJobPage.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import CandidateDashboardPage from "./pages/CandidateDashboardPage.tsx";
+import EmployerJobsPage from "./pages/EmployerJobPage.tsx";
+import EmployerJobDetailsPage from "./pages/EmployerJobDetailsPage.tsx";
+import PostJobPage from "./pages/PostJobPage.tsx";
+import EditJobPage from "./pages/EditJobPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
@@ -42,6 +46,13 @@ createRoot(document.getElementById("root")!).render(
               path="employer/dashboard"
               element={<EmployerDashboardPage />}
             />
+            <Route path="/employer/jobs" element={<EmployerJobsPage />} />
+            <Route
+              path="/employer/jobs/:id"
+              element={<EmployerJobDetailsPage />}
+            />
+            <Route path="/employer/jobs/create" element={<PostJobPage />} />
+            <Route path="/employer/jobs/:id/edit" element={<EditJobPage />} />
           </Route>
 
           {/* Admin Routes */}
