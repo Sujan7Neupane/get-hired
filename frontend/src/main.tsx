@@ -29,6 +29,8 @@ import CreateCompanyPage from "./pages/CreateCompanyPage.tsx";
 import EmployerCompanyDetailsPage from "./pages/EmployerCompanyDetailsPage.tsx";
 import EditCompanyPage from "./pages/EditCompanyPage.tsx";
 import EmployerProfilePage from "./pages/EmployerProfilePage.tsx";
+import EmployerApplicationsPage from "./pages/EmployerApplicationPage.tsx";
+import EmployerApplicationDetailsPage from "./pages/EmployerApplicationDetailsPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
@@ -75,6 +77,14 @@ createRoot(document.getElementById("root")!).render(
               element={<EditCompanyPage />}
             />
             <Route path="/employer/profile" element={<EmployerProfilePage />} />
+            <Route
+              path="/employer/applications"
+              element={<EmployerApplicationsPage />}
+            />
+            <Route
+              path="/employer/applications/:applicationId"
+              element={<EmployerApplicationDetailsPage />}
+            />
           </Route>
 
           {/* Admin Routes */}

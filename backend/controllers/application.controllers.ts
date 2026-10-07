@@ -211,6 +211,39 @@ const updateApplicationStatus = async (req: Request, res: Response) => {
   }
 };
 
+const getEmployerApplications = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Unauthorized.",
+      });
+    }
+
+    const jobs = await Job.find({
+      employer: req.user._id,
+    }).select("_id");
+
+    const jobIds = jobs.map((job) => job._id);
+
+    const applications = await Application.find({
+      job: { $in: jobIds },
+    })
+      .populate("candidate", "fullName email profileImage")
+      .populate("job", "title");
+
+    return res.status(200).json({
+      message: "Applications fetched successfully.",
+      applications,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      error: "Error fetching employer applications.",
+    });
+  }
+};
+
 const withdrawApplication = async (req: Request, res: Response) => {
   try {
     if (!req.user) {
@@ -318,4 +351,5 @@ export {
   updateApplicationStatus,
   withdrawApplication,
   getJobApplications,
+  getEmployerApplications,
 };

@@ -1,8 +1,18 @@
+export type ApplicationStatus =
+  | "pending"
+  | "reviewing"
+  | "shortlisted"
+  | "rejected"
+  | "hired"
+  | "withdrawn";
+
 export interface Application {
   _id: string;
   candidate: {
     _id: string;
     fullName: string;
+    profileImage?: string;
+    email: string;
   };
   job: {
     _id: string;
@@ -10,13 +20,7 @@ export interface Application {
   };
   resume: string;
   coverLetter?: string;
-  status:
-    | "pending"
-    | "reviewing"
-    | "shortlisted"
-    | "rejected"
-    | "hired"
-    | "withdrawn";
+  status: ApplicationStatus;
   createdAt: string;
   updatedAt: string;
 }
@@ -29,4 +33,14 @@ export interface ApplyJobResponse {
 export interface GetMyApplicationsResponse {
   message: string;
   applications: Application[];
+}
+
+export interface ApplicationResponse {
+  message: string;
+  application: Application;
+}
+
+export interface UpdateApplicationStatusResponse {
+  message: string;
+  application: Application;
 }

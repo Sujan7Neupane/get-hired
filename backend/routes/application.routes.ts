@@ -2,6 +2,7 @@ import express from "express";
 import {
   applyJob,
   getApplication,
+  getEmployerApplications,
   getJobApplications,
   getMyApplication,
   updateApplicationStatus,
@@ -29,6 +30,7 @@ router.patch(
   checkEmployer,
   updateApplicationStatus,
 );
+router.get("/employer", checkAuth, checkEmployer, getEmployerApplications);
 
 // employer
 router.get(

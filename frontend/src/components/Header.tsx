@@ -45,6 +45,9 @@ const Header = () => {
                 <li>
                   <Link to="/employer/companies">My Companies</Link>
                 </li>
+                <li>
+                  <Link to="/employer/applications">All Applications</Link>
+                </li>
               </>
             ) : (
               <>
@@ -267,6 +270,11 @@ const Header = () => {
 
                       <li>
                         <Link to="/employer/jobs">My Jobs</Link>
+                      </li>
+                      <li>
+                        <Link to="/employer/applications">
+                          All Applications
+                        </Link>
                       </li>
                     </>
                   )}

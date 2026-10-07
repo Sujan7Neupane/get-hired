@@ -11,9 +11,16 @@ interface DropdownProps {
   options: DropdownOption[];
   placeholder: string;
   onChange: (value: string) => void;
+  label?: string;
 }
 
-const Dropdown = ({ value, options, placeholder, onChange }: DropdownProps) => {
+const Dropdown = ({
+  value,
+  options,
+  placeholder,
+  onChange,
+  label,
+}: DropdownProps) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -43,6 +50,12 @@ const Dropdown = ({ value, options, placeholder, onChange }: DropdownProps) => {
 
   return (
     <div ref={dropdownRef} className="relative">
+      {label && (
+        <label className="mb-1 block text-sm text-base-content/60">
+          {label}
+        </label>
+      )}
+
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
