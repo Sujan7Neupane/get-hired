@@ -20,15 +20,20 @@ const createCompany = async (req: Request, res: Response) => {
     if (existCompany)
       return res.status(404).json({ message: "Company already exists." });
 
-    const file = req.file as Express.Multer.File;
-    const logoUpload = await uploadOnCloudinary(file.path, "image");
+    let logo: string | undefined;
+    const File: Express.Multer.File | undefined = req.file;
+    if (File) {
+      const logoUpload = await uploadOnCloudinary(File.path, "image");
+
+      logo = logoUpload?.secure_url;
+    }
 
     const parsedLocation = JSON.parse(location);
 
     const company = await Company.create({
       name,
       description,
-      logo: logoUpload?.secure_url,
+      ...(logo && { logo }),
       website,
       location: parsedLocation,
       industry,
@@ -37,7 +42,7 @@ const createCompany = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: "Company created successfully", company });
   } catch (error) {
-    // console.log(error.message);
+    console.log(error);
     return res.status(500).json({
       error: "Error creating company.",
     });

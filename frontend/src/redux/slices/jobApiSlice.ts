@@ -48,6 +48,7 @@ const jobApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: `${COMPANY_URL}/employer`,
       }),
+      providesTags: ["Company"],
     }),
     createJob: builder.mutation<GetJobByIdResponse, CreateJobRequest>({
       query: ({ companyId, job }) => ({
