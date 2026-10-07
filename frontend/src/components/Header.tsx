@@ -118,11 +118,14 @@ const Header = () => {
                 {user.role === "employer" && (
                   <>
                     <li>
+                      <Link to="/employer/profile">Profile</Link>
+                    </li>
+                    <li>
                       <Link to="/employer/dashboard">Dashboard</Link>
                     </li>
 
                     <li>
-                      <Link to="/employer/company">My Companies</Link>
+                      <Link to="/employer/companies">My Companies</Link>
                     </li>
 
                     <li>
@@ -252,11 +255,14 @@ const Header = () => {
                   {user.role === "employer" && (
                     <>
                       <li>
+                        <Link to="/employer/profile">Profile</Link>
+                      </li>
+                      <li>
                         <Link to="/employer/dashboard">Dashboard</Link>
                       </li>
 
                       <li>
-                        <Link to="/employer/company">My Company</Link>
+                        <Link to="/employer/companies">My Company</Link>
                       </li>
 
                       <li>

@@ -88,10 +88,65 @@ const updateProfile = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
 
     return res.status(500).json({
       error: "Error updating user profile.",
+    });
+  }
+};
+
+const updateEmployerProfile = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Unauthorized!",
+      });
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found!",
+      });
+    }
+
+    const { fullName } = req.body;
+
+    const files = req.files as {
+      [field: string]: Express.Multer.File[];
+    };
+
+    const image = await uploadOnCloudinary(
+      files?.profileImage?.[0]?.path,
+      "image",
+    );
+
+    user.fullName = fullName || user.fullName;
+
+    if (image) {
+      user.profileImage = image.secure_url;
+    }
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Employer profile updated successfully!",
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        profileImage: user.profileImage,
+        isActive: user.isActive,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      error: "Error updating employer profile.",
     });
   }
 };
@@ -142,4 +197,4 @@ const updatePassword = async (req: Request, res: Response) => {
   }
 };
 
-export { getUserById, updateProfile, updatePassword };
+export { getUserById, updateProfile, updatePassword, updateEmployerProfile };

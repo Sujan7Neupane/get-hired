@@ -1,4 +1,5 @@
 import { AUTH_URL, USER_URL } from "../../../constants";
+import type { GetUserResponse, User } from "../../types/auth";
 import apiSlice from "../apiSlice";
 
 interface LogoutResponse {
@@ -27,7 +28,7 @@ const authApiSlice = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
-    userInfo: builder.query({
+    userInfo: builder.query<GetUserResponse, void>({
       query: () => ({
         url: `${AUTH_URL}/user-info`,
       }),

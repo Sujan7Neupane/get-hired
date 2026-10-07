@@ -1,4 +1,5 @@
 import { USER_URL } from "../../../constants";
+import type { UpdateProfileResponse } from "../../types/auth";
 import apiSlice from "../apiSlice";
 
 const authApiSlice = apiSlice.injectEndpoints({
@@ -16,7 +17,19 @@ const authApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    updateEmployerProfile: builder.mutation<UpdateProfileResponse, FormData>({
+      query: (formData) => ({
+        url: `${USER_URL}/employer/profile`,
+        method: "PATCH",
+        body: formData,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
-export const { useGetUserByIdQuery, useUpdateProfileMutation } = authApiSlice;
+export const {
+  useGetUserByIdQuery,
+  useUpdateProfileMutation,
+  useUpdateEmployerProfileMutation,
+} = authApiSlice;
