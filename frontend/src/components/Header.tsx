@@ -49,6 +49,21 @@ const Header = () => {
                   <Link to="/employer/applications">All Applications</Link>
                 </li>
               </>
+            ) : user?.role === "admin" ? (
+              <>
+                <li>
+                  <Link to="/admin/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <Link to="/admin/users">Users</Link>
+                </li>
+                <li>
+                  <Link to="/admin/companies">Companies</Link>
+                </li>
+                <li>
+                  <Link to="/admin/applications">Applications</Link>
+                </li>
+              </>
             ) : (
               <>
                 <li>
@@ -57,6 +72,10 @@ const Header = () => {
 
                 <li>
                   <Link to="/companies">Companies</Link>
+                </li>
+
+                <li>
+                  <Link to="/about">About</Link>
                 </li>
               </>
             )}
@@ -138,9 +157,20 @@ const Header = () => {
                 )}
 
                 {user.role === "admin" && (
-                  <li>
-                    <Link to="/admin/dashboard">Admin Dashboard</Link>
-                  </li>
+                  <>
+                    <li>
+                      <Link to="/admin/dashboard">Admin Dashboard</Link>
+                    </li>
+                    <li>
+                      <Link to="/admin/users">Users</Link>
+                    </li>
+                    <li>
+                      <Link to="/admin/companies">Companies</Link>
+                    </li>
+                    <li>
+                      <Link to="/admin/applications">Applications</Link>
+                    </li>
+                  </>
                 )}
 
                 <div className="divider my-1"></div>
@@ -206,6 +236,22 @@ const Header = () => {
                     <Link to="/employer/companies">My Companies</Link>
                   </li>
                 </>
+              ) : user?.role === "admin" ? (
+                <>
+                  <li>
+                    <Link to="/admin/dashboard">Dashboard</Link>
+                  </li>
+
+                  <li>
+                    <Link to="/admin/users">Users</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin/companies">Companies</Link>
+                  </li>
+                  <li>
+                    <Link to="/admin/applications">Applications</Link>
+                  </li>
+                </>
               ) : (
                 <>
                   <li>
@@ -214,6 +260,10 @@ const Header = () => {
 
                   <li>
                     <Link to="/companies">Companies</Link>
+                  </li>
+
+                  <li>
+                    <Link to="/about">About</Link>
                   </li>
                 </>
               )}
@@ -278,14 +328,6 @@ const Header = () => {
                       </li>
                     </>
                   )}
-
-                  {user.role === "admin" && (
-                    <li>
-                      <Link to="/admin/dashboard">Admin Dashboard</Link>
-                    </li>
-                  )}
-
-                  <div className="divider my-1"></div>
 
                   <li>
                     <button

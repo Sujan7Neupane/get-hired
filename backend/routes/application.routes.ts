@@ -1,6 +1,7 @@
 import express from "express";
 import {
   applyJob,
+  getAllApplications,
   getApplication,
   getEmployerApplications,
   getJobApplications,
@@ -8,7 +9,12 @@ import {
   updateApplicationStatus,
   withdrawApplication,
 } from "../controllers/application.controllers.ts";
-import { checkAuth, checkCandidate, checkEmployer } from "../lib/checkAuth.ts";
+import {
+  checkAdmin,
+  checkAuth,
+  checkCandidate,
+  checkEmployer,
+} from "../lib/checkAuth.ts";
 import upload from "../middleware/multer.middleware.ts";
 
 const router = express.Router();

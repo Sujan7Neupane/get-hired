@@ -1,4 +1,5 @@
 import type { Application } from "./application";
+import type { User } from "./auth";
 import type { SavedJob } from "./savedJobs";
 
 export interface CandidateDashboard {
@@ -30,4 +31,20 @@ export interface EmployerDashboard {
 export interface EmployerDashboardResponse {
   message: string;
   dashboard: EmployerDashboard;
+}
+
+export interface AdminDashboard {
+  totalUsers: number;
+  totalCandidates: number;
+  totalEmployers: number;
+  totalCompanies: number;
+  totalJobs: number;
+  openJobs: number;
+  totalApplications: number;
+  recentUsers: User[];
+}
+
+export interface AdminDashboardResponse {
+  message: string;
+  dashboard: AdminDashboard;
 }

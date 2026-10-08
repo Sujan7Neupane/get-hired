@@ -9,6 +9,7 @@ import {
   getUserById,
   getUsers,
 } from "../controllers/admin.controllers.ts";
+import { getAllApplications } from "../controllers/application.controllers.ts";
 
 const router = express.Router();
 
@@ -21,5 +22,7 @@ router.get("/companies/:companyId", checkAuth, checkAdmin, getCompanyById);
 
 router.get("/jobs", checkAuth, checkAdmin, getJobs);
 router.get("/jobs/:jobId", checkAuth, checkAdmin, getJobById);
+
+router.get("/applications", checkAuth, checkAdmin, getAllApplications);
 
 export default router;

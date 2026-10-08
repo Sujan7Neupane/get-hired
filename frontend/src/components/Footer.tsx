@@ -26,18 +26,12 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/companies"
-                  className="transition hover:text-base-content"
-                >
+                <Link to="#" className="transition hover:text-base-content">
                   Companies
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/register"
-                  className="transition hover:text-base-content"
-                >
+                <Link to="#" className="transition hover:text-base-content">
                   Create Account
                 </Link>
               </li>
@@ -80,26 +74,17 @@ const Footer = () => {
 
             <ul className="mt-3 space-y-2 text-sm text-base-content/70">
               <li>
-                <Link
-                  to="/employer"
-                  className="transition hover:text-base-content"
-                >
+                <Link to="#" className="transition hover:text-base-content">
                   Hire Talent
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/employer/jobs"
-                  className="transition hover:text-base-content"
-                >
+                <Link to="#" className="transition hover:text-base-content">
                   Post a Job
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/register"
-                  className="transition hover:text-base-content"
-                >
+                <Link to="#" className="transition hover:text-base-content">
                   Employer Account
                 </Link>
               </li>

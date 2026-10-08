@@ -344,6 +344,31 @@ const getJobApplications = async (req: Request, res: Response) => {
   }
 };
 
+const getAllApplications = async (req: Request, res: Response) => {
+  try {
+    const applications = await Application.find()
+      .populate("candidate", "fullName email profileImage")
+      .populate("job", "title");
+
+    if (applications.length === 0) {
+      return res.status(404).json({
+        message: "No applications found.",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Applications fetched successfully.",
+      applications,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "Error fetching applications.",
+    });
+  }
+};
+
 export {
   applyJob,
   getMyApplication,
@@ -352,4 +377,5 @@ export {
   withdrawApplication,
   getJobApplications,
   getEmployerApplications,
+  getAllApplications,
 };

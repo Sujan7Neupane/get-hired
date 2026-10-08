@@ -1,3 +1,5 @@
+import type { Company } from "./company";
+
 export interface User {
   _id: string;
   fullName: string;
@@ -7,6 +9,12 @@ export interface User {
   skills?: string[];
   resume?: string;
   isActive?: boolean;
+  createdAt: Date;
+}
+
+export interface UsersResponse {
+  message: string;
+  users: User[];
 }
 
 export interface GetUserResponse {
@@ -17,4 +25,14 @@ export interface GetUserResponse {
 export interface UpdateProfileResponse {
   message: string;
   user: User;
+}
+
+export interface AdminCompaniesResponse {
+  message: string;
+  companies: Company[];
+}
+
+export interface AdminCompanyResponse {
+  message: string;
+  company: Company;
 }

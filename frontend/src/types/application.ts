@@ -1,3 +1,5 @@
+import type { Company } from "./company";
+
 export type ApplicationStatus =
   | "pending"
   | "reviewing"
@@ -17,6 +19,14 @@ export interface Application {
   job: {
     _id: string;
     title: string;
+    company: {
+      name: string;
+    };
+    location: {
+      city: string;
+      country: string;
+    };
+    employmentType: string;
   };
   resume: string;
   coverLetter?: string;
@@ -43,4 +53,14 @@ export interface ApplicationResponse {
 export interface UpdateApplicationStatusResponse {
   message: string;
   application: Application;
+}
+
+export interface GetAdminApplicationsResponse {
+  message: string;
+  applications: Application[];
+}
+
+export interface GetCompanyByIdResponse {
+  message: string;
+  company: Company;
 }

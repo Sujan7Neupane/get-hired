@@ -31,6 +31,10 @@ import EditCompanyPage from "./pages/EditCompanyPage.tsx";
 import EmployerProfilePage from "./pages/EmployerProfilePage.tsx";
 import EmployerApplicationsPage from "./pages/EmployerApplicationPage.tsx";
 import EmployerApplicationDetailsPage from "./pages/EmployerApplicationDetailsPage.tsx";
+import AdminUserManagementPage from "./pages/AdminUserManagementPage.tsx";
+import AdminCompaniesPage from "./pages/AdminCompaniesPage.tsx";
+import AdminApplicationsPage from "./pages/AdminApplicationsPage.tsx";
+import AdminCompanyDetailsPage from "./pages/AdminCompanyDetailsPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
@@ -90,6 +94,16 @@ createRoot(document.getElementById("root")!).render(
           {/* Admin Routes */}
           <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
             <Route path="admin/dashboard" element={<AdminDashboardPage />} />
+            <Route path="admin/users" element={<AdminUserManagementPage />} />
+            <Route path="admin/companies" element={<AdminCompaniesPage />} />
+            <Route
+              path="admin/applications"
+              element={<AdminApplicationsPage />}
+            />
+            <Route
+              path="/admin/companies/:companyId"
+              element={<AdminCompanyDetailsPage />}
+            />
           </Route>
 
           {/* Candidate Routes */}
