@@ -15,6 +15,14 @@ import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  }),
+);
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -26,13 +34,6 @@ app.use("/api/application", applicationRouter);
 app.use("/api/saved-jobs", savedJobsRouter);
 app.use("/api/dashboard", dashboardRouter);
 app.use("/api/admin", adminRouter);
-
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-  }),
-);
 
 connectDB().then(() =>
   app.listen(PORT, () =>
