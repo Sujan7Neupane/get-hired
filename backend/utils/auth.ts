@@ -19,9 +19,9 @@ const setToken = ({ _id, res }: TokenProps) => {
     // console.log(token);
 
     res.cookie("jwt", token, {
-      httpOnly: false,
+      httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
-      sameSite: "strict",
+      sameSite: "none",
       maxAge: 10 * 24 * 60 * 60 * 1000,
     });
   } catch (error: any) {
