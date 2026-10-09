@@ -1,5 +1,5 @@
 import { AUTH_URL, USER_URL } from "../../../constants";
-import type { GetUserResponse, User } from "../../types/auth";
+import type { GetUserResponse } from "../../types/auth";
 import apiSlice from "../apiSlice";
 
 interface LogoutResponse {
